@@ -10,6 +10,32 @@ dbConnection
     throw err;
   });
 
+let _db;
+
+function init(db) {
+    _db = db;
+}
+
+const knex_db = require("./db-config");
+
+const dbinitialize = async () => {
+    testBase.resetDatabase(knex_db);
+}
+
+const readTeachers = async () => {
+    const sql = `SELECT * FROM teacher`
+    return new Promise((resolve, reject) => {
+        knex_db
+            .raw(sql)
+            .then((data) => {
+                resolve(data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 const readTeacherInfo = async (id) => {
     const sql = `SELECT * FROM teacher WHERE id = ?`
     return new Promise((resolve, reject) => {
